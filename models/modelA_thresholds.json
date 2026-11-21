@@ -1,0 +1,7 @@
+{
+  "_note": "Model A decision thresholds, tuned on VALIDATION data only (target precision 0.90). Copied from the printed output of notebooks/model_a_v5_trained.ipynb. Re-generate if you retrain.",
+  "H2O": 0.53,
+  "CO2": 0.48,
+  "CH4": 0.48,
+  "SO2": 0.54
+}
