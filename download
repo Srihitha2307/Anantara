@@ -1,0 +1,6 @@
+.git
+notebooks
+docs
+tests
+data/cache
+**/__pycache__

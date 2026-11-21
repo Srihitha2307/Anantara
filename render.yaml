@@ -1,0 +1,7 @@
+# Render.com blueprint (alternative to Hugging Face Spaces). Free instances have 512 MB RAM: tight for PyTorch, so prefer a Space.
+services:
+  - type: web
+    name: anantara
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health

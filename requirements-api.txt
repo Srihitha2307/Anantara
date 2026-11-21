@@ -1,0 +1,9 @@
+# Slim runtime for the website + API (torch is installed separately, CPU build: see Dockerfile / README)
+numpy
+pandas
+scipy
+astropy
+batman-package
+fastapi
+uvicorn
+python-multipart
