@@ -197,16 +197,18 @@ async function analyse(i,name){if(busy)return;busy=true;ready=false;endTour();se
  $('#res').innerHTML=sum(d);$('#R').style.display='block';$('#rt').onclick=startTour;if($('#rd'))$('#rd').onclick=()=>setMode('dist')}
 async function upload(files){
  if(busy||!files.length)return;
- const P=$('#pipe');P.innerHTML='<li class="m">Sending to the Anantara backend…</li>';
  const fd=new FormData();[...files].forEach(f=>fd.append('files',f));fd.append('name',($('#pname').value||'').trim());
- let rec=null,err=null;
+ let rec=null,hint='';
  try{const r=await fetch(API+'/api/analyse',{method:'POST',body:fd});
-  if(r.ok)rec=await r.json();else{const j=await r.json().catch(()=>({}));err=j.detail||('Server error '+r.status)}}
- catch(e){err=null}
+  if(r.ok)rec=await r.json();
+  else if(r.status===405)hint='405 Method Not Allowed — GitHub Pages is static and cannot run uploads. Showing a cached sample; to analyse real files, deploy the backend (api/server.py via Render or a Hugging Face Space) and visit it, or set ANANTARA_API in web/config.js to its URL.';
+  else{const j=await r.json().catch(()=>({}));hint=j.detail||('Server error '+r.status)}}
+ catch(e){hint=null}
  const nm=files[0].name+(files.length>1?' +'+(files.length-1)+' more':'');
  if(rec){derive(rec);D.push(rec);return analyse(D.length-1,nm)}
- if(err){P.innerHTML='<li class="m" style="color:#f2a65a">'+esc(err)+'</li>';return}
- const i=pick(files[0].name+files[0].size);analyse(i,'Backend not reachable: showing cached sample '+D[i].n)}
+ const i=pick(files[0].name+files[0].size);
+ analyse(i,hint?'Backend not reachable: '+hint+' — showing cached sample '+D[i].n:'Backend not reachable — showing cached sample '+D[i].n);
+}
 const pick=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%97;return h%3};
 const fi=$('#f'),dr=$('#drop');
 fi.onchange=()=>{const f=[...fi.files];fi.value='';if(f.length)upload(f)};
