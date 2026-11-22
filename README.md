@@ -63,22 +63,20 @@ python scripts/build_demo_data.py     # puts real Model B / Model A scores into 
 
 ## Deploy: get a link
 
-**Option A – one link for everything (recommended): Hugging Face Space (free, 16 GB RAM, Docker)**
+**Render (Docker, free) — one service serves the website and the API**
 
-1. Create an account and an **empty Space** at huggingface.co/new-space → SDK **Docker** → Blank.
-2. `pip install huggingface_hub && huggingface-cli login`
-3. From the repo root: `bash deploy/huggingface/push.sh <your-hf-username>/anantara`
-4. After a few minutes of building: `https://<your-hf-username>-anantara.hf.space`. Test it with `/api/health`.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Srihitha2307/Anantara)
 
-**Option B – static site on GitHub Pages** (the cached demo planets work with no backend)
+1. Open the button above (or <https://render.com/deploy?repo=https://github.com/Srihitha2307/Anantara>).
+2. Sign in with GitHub, pick the workspace, and click **Apply**. Render reads `render.yaml`, builds the `Dockerfile`, and starts `uvicorn api.server:app`.
+3. Wait for the first build (~5–8 min on free CPU), then open **<https://anantara-ai.onrender.com>**.
+4. Free instances sleep after 15 minutes of inactivity; the first request afterwards takes ~30–60 s to wake.
 
-1. Repo → Settings → Pages → Source: **GitHub Actions**. The workflow in `.github/workflows/pages.yml` publishes `web/`.
-2. Result: `https://<you>.github.io/anantara/`.
-3. To enable real uploads on that page, put the Space URL in `web/config.js`:
-   `window.ANANTARA_API = "https://<your-hf-username>-anantara.hf.space";` and commit.
-   If the backend is down the page falls back to the cached sample planets and says so.
+The blueprint uses Render's free 512 MB plan. Models load lazily, so normal uploads fit; if a very large file is OOM-killed, switch the instance type in Render → Settings.
 
-Render (`render.yaml`) also works, but its free tier has 512 MB RAM, which is tight for PyTorch.
+**GitHub Pages (static demo only)** — `.github/workflows/pages.yml` publishes `web/`. Set `window.ANANTARA_API` in `web/config.js` to the Render URL to make uploads work on the Pages page too; if the backend is asleep the page falls back to the cached sample planets.
+
+**Hugging Face Space** — the `deploy/huggingface/` kit still works, but the Space must use the Docker SDK and have available `cpu-basic` quota.
 
 ## Training (Colab, free T4 GPU)
 

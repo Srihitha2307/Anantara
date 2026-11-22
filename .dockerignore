@@ -1,0 +1,15 @@
+# Build context trimming for Render / any Docker host.
+# Only the runtime pieces are copied by the Dockerfile anyway.
+.git
+.github
+notebooks
+docs
+tests
+data/cache
+__pycache__
+**/__pycache__
+*.pyc
+.venv
+venv
+download
+download (1)

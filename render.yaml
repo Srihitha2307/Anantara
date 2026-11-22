@@ -1,7 +1,17 @@
-# Render.com blueprint (alternative to Hugging Face Spaces). Free instances have 512 MB RAM: tight for PyTorch, so prefer a Space.
+# Render.com blueprint: one Docker service serves the website AND the API.
+# Free plan = 512 MB RAM. Models are loaded lazily, so a normal upload fits;
+# a very large spectrum/light curve may need a paid instance.
 services:
   - type: web
-    name: anantara
+    name: anantara-ai
     runtime: docker
     plan: free
+    region: oregon
+    branch: main
+    autoDeploy: true
     healthCheckPath: /api/health
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
