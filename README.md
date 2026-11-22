@@ -61,22 +61,9 @@ python scripts/analyse.py --name "K2-18 b" --lc kic_lightcurve.fits --spectrum k
 python scripts/build_demo_data.py     # puts real Model B / Model A scores into the cached demo planets
 ```
 
-## Deploy: get a link
+## Deploy: the link
 
-**Render (Docker, free) — one service serves the website and the API**
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Srihitha2307/Anantara)
-
-1. Open the button above (or <https://render.com/deploy?repo=https://github.com/Srihitha2307/Anantara>).
-2. Sign in with GitHub, pick the workspace, and click **Apply**. Render reads `render.yaml`, builds the `Dockerfile`, and starts `uvicorn api.server:app`.
-3. Wait for the first build (~5–8 min on free CPU), then open **<https://anantara-ai.onrender.com>**.
-4. Free instances sleep after 15 minutes of inactivity; the first request afterwards takes ~30–60 s to wake.
-
-The blueprint uses Render's free 512 MB plan. Models load lazily, so normal uploads fit; if a very large file is OOM-killed, switch the instance type in Render → Settings.
-
-**GitHub Pages (static demo only)** — `.github/workflows/pages.yml` publishes `web/`. Set `window.ANANTARA_API` in `web/config.js` to the Render URL to make uploads work on the Pages page too; if the backend is asleep the page falls back to the cached sample planets.
-
-**Hugging Face Space** — the `deploy/huggingface/` kit still works, but the Space must use the Docker SDK and have available `cpu-basic` quota.
+Deployable link : https://anantara-ai.onrender.com/
 
 ## Training (Colab, free T4 GPU)
 
